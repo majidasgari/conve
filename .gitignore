@@ -1,0 +1,79 @@
+*.swp
+.venv
+__pycache__/
+*.pyc
+data/
+logs/
+results/
+models/
+checkpoints/
+outputs/
+saved_models/
+
+# Python
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# pytest
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Package builds (bashmagic & spodernet)
+bashmagic/build/
+bashmagic/dist/
+bashmagic/*.egg-info/
+bashmagic/**/*.pyc
+bashmagic/**/__pycache__/
+spodernet/build/
+spodernet/dist/
+spodernet/*.egg-info/
+spodernet/**/*.pyc
+spodernet/**/__pycache__/
