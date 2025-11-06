@@ -10,6 +10,7 @@ from spodernet.preprocessing.pipeline import Pipeline
 from spodernet.preprocessing.batching import StreamBatcher
 from spodernet.utils.global_config import Config
 from evaluation import ranking_and_hits
+from conve_reranker import ConvEReranker
 
 # تنظیمات
 Config.backend = 'pytorch'
@@ -99,9 +100,36 @@ print("\n" + "=" * 70)
 print("شروع ارزیابی Test Set")
 print("=" * 70)
 
-# تست
+# تست بدون re-ranking
+print("\n>>> ارزیابی بدون Re-ranking:")
 with torch.no_grad():
-    ranking_and_hits(model, test_rank_batcher, vocab, 'Test Evaluation')
+    ranking_and_hits(model, test_rank_batcher, vocab, 'Test Evaluation - Baseline')
+
+# تست با BGE re-ranking
+print("\n>>> ارزیابی با BGE Re-ranking:")
+# بارگذاری مجدد test batcher برای re-ranking
+test_rank_batcher_rerank = StreamBatcher(
+    'FB15k-237', 
+    'test_ranking', 
+    128, 
+    randomize=False, 
+    loader_threads=4, 
+    keys=['e1', 'rel', 'rel_eval', 'e2', 'e2_multi1', 'e2_multi2']
+)
+
+# ایجاد reranker
+reranker = ConvEReranker(
+    model=model,
+    vocab=vocab,
+    use_gpu=True,
+    k=20,  # تعداد کاندیدهای top-k برای re-ranking
+    st_model_name="BAAI/bge-m3",
+    data_path="data/FB15k-237"
+)
+
+# ارزیابی با re-ranking
+with torch.no_grad():
+    reranker.ranking_and_hits_with_reranking(test_rank_batcher_rerank, 'Test Evaluation with BGE Re-ranking')
 
 print("\n" + "=" * 70)
 print("تست تکمیل شد!")
