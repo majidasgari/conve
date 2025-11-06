@@ -1,0 +1,33 @@
+نتایج تست مدل ConvE
+======================================================================
+زمان اجرا: 2025-11-04 18:23:56.882091
+======================================================================
+
+/data/ConvE/test_model.py:87: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model_params = torch.load(args.model_path)
+======================================================================
+شروع تست مدل
+======================================================================
+2025-11-04 18:23:59.418337 (WARNING): Pipeline path /home/ubuntu/.data/FB15k-237 already exist. This pipeline may overwrite data in this path!
+2025-11-04 18:23:59.420010 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab
+2025-11-04 18:23:59.420096 (INFO): Vocabulary outdated: /home/ubuntu/.data/FB15k-237/vocab
+
+تعداد Entities: 2
+تعداد Relations: 2
+
+ایجاد مدل: conve
+2 2
+
+بارگذاری مدل از: saved_models/FB15k-237_conve_0.2_0.3.model
+Traceback (most recent call last):
+  File "/data/ConvE/test_model.py", line 181, in <module>
+    load_and_test_model(args)
+  File "/data/ConvE/test_model.py", line 88, in load_and_test_model
+    model.load_state_dict(model_params)
+  File "/data/ConvE/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2215, in load_state_dict
+    raise RuntimeError('Error(s) in loading state_dict for {}:\n\t{}'.format(
+RuntimeError: Error(s) in loading state_dict for ConvE:
+	Missing key(s) in state_dict: "conv1.bias". 
+	size mismatch for b: copying a param with shape torch.Size([14543]) from checkpoint, the shape in current model is torch.Size([2]).
+	size mismatch for emb_e.weight: copying a param with shape torch.Size([14543, 200]) from checkpoint, the shape in current model is torch.Size([2, 200]).
+	size mismatch for emb_rel.weight: copying a param with shape torch.Size([476, 200]) from checkpoint, the shape in current model is torch.Size([2, 200]).
