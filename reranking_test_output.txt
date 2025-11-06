@@ -1,0 +1,108 @@
+======================================================================
+بارگذاری Dataset و Vocabulary
+======================================================================
+2025-11-06 09:46:18.990019 (WARNING): Pipeline path /home/ubuntu/.data/FB15k-237 already exist. This pipeline may overwrite data in this path!
+2025-11-06 09:46:18.991484 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab
+2025-11-06 09:46:18.991603 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e1
+2025-11-06 09:46:18.994439 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_rel
+2025-11-06 09:46:18.994646 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_rel_eval
+2025-11-06 09:46:18.994686 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e2
+2025-11-06 09:46:18.994720 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e2_multi1
+2025-11-06 09:46:18.997879 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e2_multi2
+✓ تعداد Entities: 14543
+✓ تعداد Relations: 476
+
+======================================================================
+ایجاد مدل
+======================================================================
+14543 476
+ConvE(
+  (emb_e): Embedding(14543, 200, padding_idx=0)
+  (emb_rel): Embedding(476, 200, padding_idx=0)
+  (inp_drop): Dropout(p=0.2, inplace=False)
+  (hidden_drop): Dropout(p=0.3, inplace=False)
+  (feature_map_drop): Dropout2d(p=0.2, inplace=False)
+  (loss): BCELoss()
+  (conv1): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), bias=False)
+  (bn0): BatchNorm2d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (bn2): BatchNorm1d(200, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (fc): Linear(in_features=9728, out_features=200, bias=True)
+)
+
+بارگذاری وزن‌ها از: saved_models/FB15k-237_conve_0.2_0.3.model
+
+======================================================================
+ایجاد BGE Re-ranking Evaluator
+======================================================================
+2025-11-06 09:46:19.243910 (INFO): Loading Sentence Transformer 'BAAI/bge-m3' to cuda...
+2025-11-06 09:46:23.207845 (INFO): Error loading Sentence Transformer model: Due to a serious vulnerability issue in `torch.load`, even with `weights_only=True`, we now require users to upgrade torch to at least v2.6 in order to use the function. This version restriction does not apply when loading files with safetensors.
+See the vulnerability report here https://nvd.nist.gov/vuln/detail/CVE-2025-32434
+2025-11-06 09:46:23.209520 (INFO): Loading entities mapping from: data/FB15k-237/entity2id.txt
+2025-11-06 09:46:23.214434 (INFO): Successfully loaded 14542 entities.
+2025-11-06 09:46:23.214459 (INFO): Loading relations mapping from: data/FB15k-237/relation2id.txt
+2025-11-06 09:46:23.214819 (INFO): Successfully loaded 475 relations.
+2025-11-06 09:46:23.214829 (INFO): BGERerankEvaluator initialized with k=20, BGE model=BAAI/bge-m3
+
+======================================================================
+شروع ارزیابی Test Set با BGE Re-ranking
+======================================================================
+2025-11-06 09:46:23.214860 (INFO): Error: Sentence Transformer model failed to load. Cannot perform re-ranking.
+
+======================================================================
+تست تکمیل شد!
+======================================================================
+======================================================================
+بارگذاری Dataset و Vocabulary
+======================================================================
+2025-11-06 09:52:07.427784 (WARNING): Pipeline path /home/ubuntu/.data/FB15k-237 already exist. This pipeline may overwrite data in this path!
+2025-11-06 09:52:07.429304 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab
+2025-11-06 09:52:07.429418 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e1
+2025-11-06 09:52:07.432499 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_rel
+2025-11-06 09:52:07.432703 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_rel_eval
+2025-11-06 09:52:07.432745 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e2
+2025-11-06 09:52:07.432778 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e2_multi1
+2025-11-06 09:52:07.435606 (INFO): Loading vocab from: /home/ubuntu/.data/FB15k-237/vocab_e2_multi2
+✓ تعداد Entities: 14543
+✓ تعداد Relations: 476
+
+======================================================================
+ایجاد مدل
+======================================================================
+14543 476
+ConvE(
+  (emb_e): Embedding(14543, 200, padding_idx=0)
+  (emb_rel): Embedding(476, 200, padding_idx=0)
+  (inp_drop): Dropout(p=0.2, inplace=False)
+  (hidden_drop): Dropout(p=0.3, inplace=False)
+  (feature_map_drop): Dropout2d(p=0.2, inplace=False)
+  (loss): BCELoss()
+  (conv1): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), bias=False)
+  (bn0): BatchNorm2d(1, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (bn1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (bn2): BatchNorm1d(200, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (fc): Linear(in_features=9728, out_features=200, bias=True)
+)
+
+بارگذاری وزن‌ها از: saved_models/FB15k-237_conve_0.2_0.3.model
+
+======================================================================
+ایجاد BGE Re-ranking Evaluator
+======================================================================
+2025-11-06 09:52:07.673237 (INFO): Loading Sentence Transformer 'BAAI/bge-m3' to cuda...
+2025-11-06 09:52:08.213856 (INFO): Error loading Sentence Transformer model: Due to a serious vulnerability issue in `torch.load`, even with `weights_only=True`, we now require users to upgrade torch to at least v2.6 in order to use the function. This version restriction does not apply when loading files with safetensors.
+See the vulnerability report here https://nvd.nist.gov/vuln/detail/CVE-2025-32434
+2025-11-06 09:52:08.216078 (INFO): Loading entities mapping from: data/FB15k-237/entity2id.txt
+2025-11-06 09:52:08.221032 (INFO): Successfully loaded 14542 entities.
+2025-11-06 09:52:08.221059 (INFO): Loading relations mapping from: data/FB15k-237/relation2id.txt
+2025-11-06 09:52:08.221381 (INFO): Successfully loaded 475 relations.
+2025-11-06 09:52:08.221390 (INFO): BGERerankEvaluator initialized with k=20, BGE model=BAAI/bge-m3
+
+======================================================================
+شروع ارزیابی Test Set با BGE Re-ranking
+======================================================================
+2025-11-06 09:52:08.221420 (INFO): Error: Sentence Transformer model failed to load. Cannot perform re-ranking.
+
+======================================================================
+تست تکمیل شد!
+======================================================================
