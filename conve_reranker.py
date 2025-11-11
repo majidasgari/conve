@@ -473,7 +473,9 @@ class ConvEReranker:
                         hits[hits_level].append(0.0)
                         hits_right[hits_level].append(0.0)
 
-            dev_rank_batcher.state.loss = [0]
+            # Set loss state if available (for compatibility with regular batchers)
+            if hasattr(dev_rank_batcher, 'state'):
+                dev_rank_batcher.state.loss = [0]
 
         # چاپ نتایج
         print("\n" + "=" * 70)
