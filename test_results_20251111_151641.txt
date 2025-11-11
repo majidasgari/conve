@@ -1,0 +1,33 @@
+نتایج تست مدل ConvE
+======================================================================
+زمان اجرا: 2025-11-11 15:16:41.444219
+======================================================================
+
+======================================================================
+شروع تست مدل
+======================================================================
+2025-11-11 15:16:44.343459 (WARNING): Pipeline path /home/ubuntu/.data/FarsPredict already exist. This pipeline may overwrite data in this path!
+2025-11-11 15:16:44.344937 (INFO): Loading vocab from: /home/ubuntu/.data/FarsPredict/vocab
+2025-11-11 15:16:44.345264 (INFO): Loading vocab from: /home/ubuntu/.data/FarsPredict/vocab_e1
+2025-11-11 15:16:44.393260 (INFO): Loading vocab from: /home/ubuntu/.data/FarsPredict/vocab_rel
+2025-11-11 15:16:44.393738 (INFO): Loading vocab from: /home/ubuntu/.data/FarsPredict/vocab_rel_eval
+2025-11-11 15:16:44.393875 (INFO): Loading vocab from: /home/ubuntu/.data/FarsPredict/vocab_e2
+2025-11-11 15:16:44.393987 (INFO): Loading vocab from: /home/ubuntu/.data/FarsPredict/vocab_e2_multi1
+2025-11-11 15:16:44.440517 (INFO): Loading vocab from: /home/ubuntu/.data/FarsPredict/vocab_e2_multi2
+
+✓ تعداد Entities: 107809
+✓ تعداد Relations: 786
+
+ایجاد مدل: conve
+107809 786
+
+بارگذاری مدل از: saved_models/FarsPredict_conve_0.2_0.3.epoch_281.model
+Traceback (most recent call last):
+  File "/data/ConvE/test_model.py", line 198, in <module>
+    load_and_test_model(args)
+  File "/data/ConvE/test_model.py", line 105, in load_and_test_model
+    model.load_state_dict(model_params)
+  File "/data/ConvE/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for ConvE:
+	Missing key(s) in state_dict: "conv1.bias". 
