@@ -389,8 +389,17 @@ class ConvEReranker:
                 h_name = self._get_names(h_true, self.id2entity)[0]
                 r_name = self._get_names(r_true, self.id2relation)[0]
 
-                # محاسبه BGE scores برای top-k و جواب صحیح (batch processing)
-                final_scores_t = np.full(self.num_entities, float("inf"))
+                # شروع با ConvE scores (به صورت distance: بزرگتر = بدتر)
+                # Normalize ConvE scores to [0, 1] then convert to distance
+                min_score = kge_scores_t.min()
+                max_score = kge_scores_t.max()
+                if max_score > min_score:
+                    normalized_conve = (kge_scores_t - min_score) / (max_score - min_score)
+                else:
+                    normalized_conve = np.zeros_like(kge_scores_t)
+                final_scores_t = 1.0 - normalized_conve  # distance: کوچکتر = بهتر
+                
+                # حالا top-k را با BGE re-rank می‌کنیم
                 ids_to_score_bge_t = set(top_k_tail_ids)
                 ids_to_score_bge_t.add(t_true)
 
@@ -399,7 +408,7 @@ class ConvEReranker:
                     h_name, r_name, list(ids_to_score_bge_t), self.id2entity
                 )
 
-                # اختصاص BGE scores
+                # Override top-k با BGE scores
                 for tail_id, score in bge_score_map_t.items():
                     if 0 <= tail_id < self.num_entities:
                         final_scores_t[tail_id] = score
@@ -412,8 +421,13 @@ class ConvEReranker:
                     if other_t != t_true and (h_true, r_true, other_t) in self.all_true_triples:
                         filtered_final_scores_t[other_t] = float("inf")
 
-                # محاسبه rank
-                rank_t = np.sum(filtered_final_scores_t < true_score_t) + 1
+                # محاسبه rank با tie-breaking صحیح
+                # تعداد entities با score بهتر (کوچکتر)
+                better = np.sum(filtered_final_scores_t < true_score_t)
+                # تعداد entities با score مساوی (برای tie-breaking)
+                equal = np.sum(filtered_final_scores_t == true_score_t)
+                # Average rank در صورت tie
+                rank_t = better + (equal + 1) / 2.0
                 ranks.append(rank_t)
                 ranks_left.append(rank_t)
 
@@ -437,8 +451,16 @@ class ConvEReranker:
                 r_reverse_val = rel_reverse[batch_idx, 0].item()
                 r_name_reverse = self._get_names(r_reverse_val, self.id2relation)[0]
 
-                # محاسبه BGE scores (batch processing)
-                final_scores_h = np.full(self.num_entities, float("inf"))
+                # شروع با ConvE scores (به صورت distance: بزرگتر = بدتر)
+                min_score = kge_scores_h.min()
+                max_score = kge_scores_h.max()
+                if max_score > min_score:
+                    normalized_conve = (kge_scores_h - min_score) / (max_score - min_score)
+                else:
+                    normalized_conve = np.zeros_like(kge_scores_h)
+                final_scores_h = 1.0 - normalized_conve  # distance: کوچکتر = بهتر
+                
+                # حالا top-k را با BGE re-rank می‌کنیم
                 ids_to_score_bge_h = set(top_k_head_ids)
                 ids_to_score_bge_h.add(h_true)
 
@@ -447,7 +469,7 @@ class ConvEReranker:
                     t_name, r_name_reverse, list(ids_to_score_bge_h), self.id2entity, is_head_prediction=True
                 )
 
-                # اختصاص BGE scores
+                # Override top-k با BGE scores
                 for head_id, score in bge_score_map_h.items():
                     if 0 <= head_id < self.num_entities:
                         final_scores_h[head_id] = score
@@ -460,8 +482,13 @@ class ConvEReranker:
                     if other_h != h_true and (other_h, r_true, t_true) in self.all_true_triples:
                         filtered_final_scores_h[other_h] = float("inf")
 
-                # محاسبه rank
-                rank_h = np.sum(filtered_final_scores_h < true_score_h) + 1
+                # محاسبه rank با tie-breaking صحیح
+                # تعداد entities با score بهتر (کوچکتر)
+                better = np.sum(filtered_final_scores_h < true_score_h)
+                # تعداد entities با score مساوی (برای tie-breaking)
+                equal = np.sum(filtered_final_scores_h == true_score_h)
+                # Average rank در صورت tie
+                rank_h = better + (equal + 1) / 2.0
                 ranks.append(rank_h)
                 ranks_right.append(rank_h)
 
@@ -479,7 +506,10 @@ class ConvEReranker:
 
         # چاپ نتایج
         print("\n" + "=" * 70)
-        print("Results with BGE Re-ranking:")
+        print(f"Results: ConvE + BGE Re-ranking (Top-{self.k})")
+        print("=" * 70)
+        print(f'Method: Re-rank top-{self.k} ConvE predictions with BGE semantic similarity')
+        print(f'The rest of entities keep their original ConvE ranking.')
         print("=" * 70)
         print(f'Cache Statistics: {len(self.embedding_cache)} unique embeddings cached')
         print("=" * 70)
@@ -493,6 +523,7 @@ class ConvEReranker:
         print(f'Mean reciprocal rank left: {np.mean(1./np.array(ranks_left)):.4f}')
         print(f'Mean reciprocal rank right: {np.mean(1./np.array(ranks_right)):.4f}')
         print(f'MRR: {np.mean(1./np.array(ranks)):.4f}')
+        print("=" * 70)
         print("=" * 70 + "\n")
 
         return np.mean(1./np.array(ranks)), np.mean(ranks), np.mean(hits[9])

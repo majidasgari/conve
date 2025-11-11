@@ -108,7 +108,7 @@ reranker = ConvEReranker(
     model=model,
     vocab=vocab,
     use_gpu=True,
-    k=10,  # کاهش k برای تست سریعتر
+    k=20,  # re-rank top-20 from ConvE
     st_model_name="BAAI/bge-m3",
     data_path="data/FarsPredict"
 )
