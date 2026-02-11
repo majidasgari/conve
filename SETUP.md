@@ -125,6 +125,7 @@ pip install -e bashmagic/
 ```bash
 # Install main ConvE requirements
 pip install -r requirements.txt
+python -m spacy download en_core_web_sm
 ```
 
 This installs:
@@ -202,6 +203,7 @@ pip install -e bashmagic/
 
 # Install ConvE requirements
 pip install -r requirements.txt
+python -m spacy download en_core_web_sm
 
 # Verify installation
 python -c "

@@ -77,3 +77,5 @@ spodernet/dist/
 spodernet/*.egg-info/
 spodernet/**/*.pyc
 spodernet/**/__pycache__/
+
+dmlab_data
